@@ -4,17 +4,21 @@ import { FixedIDGenerator } from 'src/adapter/fixed-id-generator';
 import { Webinaire } from '../entities/webinaire.entity';
 import { IDateGenerator } from 'src/ports/date-generator.interface';
 import { FixedDateGenerator } from 'src/adapter/fixed-date-generator';
+import { User } from 'src/entities/user.entity';
 
 describe('Feature: My first webinaire', () => {
   function expectWebinaireToEqual(Webinaire: Webinaire) {
     expect(Webinaire.props).toEqual({
       id: 'id-1',
+      organizerId: 'johnDoe',
       title: 'My first webinaire',
       seats: 100,
       startDate: new Date('2023-01-10T10:00:00.000Z'),
       endDate: new Date('2023-01-10T11:00:00.000Z'),
     });
   }
+
+  const johnDoe = new User({ id: 'johnDoe' });
 
   let repository: InMemoryWebinaireRepository;
   let idGenerator: FixedIDGenerator;
@@ -30,6 +34,7 @@ describe('Feature: My first webinaire', () => {
 
   describe('Scenario: happy path', () => {
     const payload = {
+      user: johnDoe,
       title: 'My first webinaire',
       seats: 100,
       startDate: new Date('2023-01-10T10:00:00.000Z'),
@@ -53,6 +58,7 @@ describe('Feature: My first webinaire', () => {
 
   describe('Scenario: teh webinaire happens too soon', () => {
     const payload = {
+      user: johnDoe,
       title: 'My first webinaire',
       seats: 100,
       startDate: new Date('2023-01-01T10:00:00.000Z'),
@@ -74,6 +80,7 @@ describe('Feature: My first webinaire', () => {
 
   describe('Scenario: teh webinaire has too many seats', () => {
     const payload = {
+      user: johnDoe,
       title: 'My first webinaire',
       seats: 1001,
       startDate: new Date('2023-01-10T10:00:00.000Z'),
@@ -96,6 +103,7 @@ describe('Feature: My first webinaire', () => {
 
   describe('Scenario: the webinaire dont have enough seats', () => {
     const payload = {
+      user: johnDoe,
       title: 'My first webinaire',
       seats: 0,
       startDate: new Date('2023-01-10T10:00:00.000Z'),

@@ -1,4 +1,5 @@
 import { differenceInDays } from 'date-fns';
+import { User } from 'src/entities/user.entity';
 import { Webinaire } from 'src/entities/webinaire.entity';
 import { IDateGenerator } from 'src/ports/date-generator.interface';
 import { IIDGenerator } from 'src/ports/id-genrator.interface';
@@ -11,6 +12,7 @@ export class OrganizeWebinaire {
     private readonly dateGenerator: IDateGenerator,
   ) {}
   async execute(data: {
+    user: User;
     title: string;
     seats: number;
     startDate: Date;
@@ -19,6 +21,7 @@ export class OrganizeWebinaire {
     const id = this.idGenerator.generate();
     const webinaire = new Webinaire({
       id,
+      organizerId: data.user.props.id,
       title: data.title,
       seats: data.seats,
       startDate: data.startDate,
