@@ -1,6 +1,6 @@
 import { differenceInDays } from 'date-fns';
-import { User } from 'src/entities/user.entity';
-import { Webinaire } from 'src/entities/webinaire.entity';
+import { User } from '../entities/user.entity';
+import { Webinaire } from '../entities/webinaire.entity';
 import { IDateGenerator } from 'src/ports/date-generator.interface';
 import { IIDGenerator } from 'src/ports/id-genrator.interface';
 import { IWebinaireRepository } from 'src/ports/webinaire-repository.interface';
