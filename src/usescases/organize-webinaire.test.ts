@@ -1,4 +1,5 @@
 import {
+  IIDGenerator,
   IWebinaireRepository,
   OrganizeWebinaire,
   Webinaire,
@@ -13,8 +14,16 @@ describe('Feature: My first webinaire', () => {
       }
     }
 
+    class FixedIDGenerator implements IIDGenerator {
+      generate(): string {
+        return 'id-1';
+      }
+    }
+
     const repository = new WebinaireRepository();
-    const useCase = new OrganizeWebinaire(repository);
+    const idGenerator = new FixedIDGenerator();
+
+    const useCase = new OrganizeWebinaire(repository, idGenerator);
     const result = await useCase.execute({
       title: 'My first webinaire',
       seats: 100,
@@ -24,6 +33,7 @@ describe('Feature: My first webinaire', () => {
     expect(repository.database.length).toBe(1);
 
     const createdWebinaire = repository.database[0];
+    
     expect(createdWebinaire.props.id).toBe('id-1');
     expect(createdWebinaire.props.title).toBe('My first webinaire');
     expect(createdWebinaire.props.seats).toBe(100);

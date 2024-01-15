@@ -1,35 +1,34 @@
-export class Webinaire {
-  public props: {
-    id: string;
-    title: string;
-    startDate: Date;
-    endDate: Date;
-    seats: number;
-  };
+type WebinaireProps = {
+  id: string;
+  title: string;
+  seats: number;
+  startDate: Date;
+  endDate: Date;
+};
 
-  constructor(data: {
-    id: string;
-    title: string;
-    seats: number;
-    startDate: Date;
-    endDate: Date;
-  }) {
-    this.props = data;
-  }
+export class Webinaire {
+  constructor(public props: WebinaireProps) {}
 }
 export interface IWebinaireRepository {
   create(webinaire: Webinaire): Promise<void>;
 }
 
+export interface IIDGenerator {
+  generate(): string;
+}
+
 export class OrganizeWebinaire {
-  constructor(private readonly repository: IWebinaireRepository) {}
+  constructor(
+    private readonly repository: IWebinaireRepository,
+    private readonly idGenerator: IIDGenerator,
+  ) {}
   async execute(data: {
     title: string;
     seats: number;
     startDate: Date;
     endDate: Date;
   }) {
-    const id = 'id-1';
+    const id = this.idGenerator.generate();
     this.repository.create(
       new Webinaire({
         id,
